@@ -1,17 +1,17 @@
 [
   {
     "title": "BookStore Telegram Bot",
-    "description": "A modern ecommerce site built with typescript, supabase, and better cashing technologies",
-    "stack": ["Typescript", "supabase", "grammy"]
+    "description": "A commerce-focused Telegram bot built for a smoother ordering experience, with structured product flows, data persistence, and reliable bot interactions.",
+    "stack": ["TypeScript", "Supabase", "grammY"]
   },
   {
-    "title": "Interactive Course Showcase",
-    "description": "A JavaScript-driven section that updates the page dynamically, demonstrating DOM selection, event handling, and reusable rendering logic.",
-    "stack": ["JavaScript", "DOM", "UI Interaction"]
+    "title": "Portfolio Website",
+    "description": "A modern personal portfolio focused on clean layout, strong typography, responsive behavior, and polished front-end interaction.",
+    "stack": ["React", "TypeScript", "CSS"]
   },
   {
-    "title": "Asynchronous Project Loader",
-    "description": "A lightweight AJAX example that loads project data from JSON using fetch, with a graceful fallback to keep the page functional everywhere.",
-    "stack": ["AJAX", "JSON", "Fetch API"]
+    "title": "Node.js API Service",
+    "description": "A back-end service designed around maintainable routes, clear data flow, and dependable integration with client applications.",
+    "stack": ["Node.js", "Express", "REST API"]
   }
 ]

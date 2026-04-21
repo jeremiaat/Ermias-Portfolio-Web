@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Modern portfolio website for Jeremiah, focused on web development, UI design, and clean digital experiences.">
   <title>Jeremiah | Portfolio Website</title>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("theme");
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = savedTheme || (systemPrefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
@@ -18,12 +26,19 @@
         <span class="brand-text">Jeremiah</span>
       </a>
 
-      <nav class="main-nav" aria-label="Primary navigation">
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <div class="header-controls">
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span id="themeToggleLabel">Dark mode</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -33,7 +48,7 @@
         <div class="hero-copy reveal">
           <p class="eyebrow">Web developer / UI-focused / Problem solver</p>
           <p class="hero-kicker">Thoughtful interfaces, solid front-end structure, and smooth user interaction.</p>
-          <h1>Building simple digital experiences with clean structure and modern interaction.</h1>
+          <h1>Building simple digital experiences</h1>
           <p class="hero-summary">
             I design and build websites that feel calm, usable, and visually clear,
             with a strong focus on responsiveness, accessibility, and polished interaction.
@@ -57,31 +72,31 @@
         </div>
 
         <aside class="hero-panel reveal" aria-label="Portfolio highlights">
-          <p class="panel-label">What this site demonstrates</p>
+          <p class="panel-label">Software Engineer</p>
 
           <div class="hero-panel-top">
-            <p class="hero-panel-title">Front-end foundation with a polished presentation.</p>
+            <p class="hero-panel-title">Designing reliable products with a strong eye for user experience.</p>
             <p class="hero-panel-text">
-              A calm landing section that combines structure, typography, contrast, and interaction in one focused layout.
+              I enjoy building web applications that are clean in the interface, practical in architecture, and thoughtful in the details.
             </p>
           </div>
 
           <div class="hero-metrics" aria-label="Hero metrics">
             <article class="metric-card">
-              <strong>4</strong>
-              <span>Core strengths shown across the portfolio</span>
+              <strong>Front-end</strong>
+              <span>React, TypeScript, responsive UI, and design-focused implementation</span>
             </article>
             <article class="metric-card">
-              <strong>3</strong>
-              <span>Interactive JavaScript touches on the page</span>
+              <strong>Back-end</strong>
+              <span>Node.js, API development, data handling, and maintainable project structure</span>
             </article>
           </div>
 
           <ul class="feature-list">
-            <li>Semantic page structure and accessible navigation</li>
-            <li>Responsive layout with modern CSS styling</li>
-            <li>JavaScript DOM updates and scroll interactions</li>
-            <li>AJAX-style project loading from JSON data</li>
+            <li>Building responsive interfaces with React and modern CSS</li>
+            <li>Creating scalable back-end services with Node.js</li>
+            <li>Writing safer, maintainable code with TypeScript</li>
+            <li>Using Git for version control and collaborative workflows</li>
           </ul>
         </aside>
       </div>
@@ -127,9 +142,9 @@
         <div class="section-heading reveal section-heading-row">
           <div>
             <p class="eyebrow">Projects</p>
-            <h2>Course-aligned work, loaded dynamically.</h2>
+            <h2>Selected work focused on product quality and usability.</h2>
           </div>
-          <p class="section-note">Projects are rendered with JavaScript from external JSON data.</p>
+          <p class="section-note">A few examples of the kind of systems and interfaces I enjoy building.</p>
         </div>
 
         <div id="projectGrid" class="project-grid reveal" aria-live="polite">
@@ -144,25 +159,25 @@
       <div class="container">
         <div class="section-heading reveal">
           <p class="eyebrow">Skills</p>
-          <h2>Built from the fundamentals in the chapters.</h2>
+          <h2>Tools and technologies I use to build modern web products.</h2>
         </div>
 
         <div class="skills-layout">
           <article class="skill-panel reveal">
-            <h3>HTML</h3>
-            <p>Semantic tags, page structure, forms, links, headings, lists, and accessibility-aware markup.</p>
+            <h3>React</h3>
+            <p>Building component-based interfaces, reusable UI systems, and responsive user experiences.</p>
           </article>
           <article class="skill-panel reveal">
-            <h3>CSS</h3>
-            <p>Typography, color contrast, spacing systems, cards, responsive layout, and visual consistency.</p>
+            <h3>Node.js</h3>
+            <p>Developing back-end services, APIs, and application logic that stay organized and scalable.</p>
           </article>
           <article class="skill-panel reveal">
-            <h3>JavaScript</h3>
-            <p>Variables, functions, conditions, loops, DOM selection, event handling, and content updates.</p>
+            <h3>TypeScript</h3>
+            <p>Writing safer code with better structure, clearer contracts, and improved long-term maintainability.</p>
           </article>
           <article class="skill-panel reveal">
-            <h3>AJAX</h3>
-            <p>Asynchronous data loading using `fetch()` with a fallback for environments where local JSON is blocked.</p>
+            <h3>Git</h3>
+            <p>Managing version control, tracking changes cleanly, and collaborating through structured workflows.</p>
           </article>
         </div>
       </div>

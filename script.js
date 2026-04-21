@@ -1,21 +1,21 @@
 const fallbackProjects = [
   {
-    title: "Responsive Portfolio Interface",
+    title: "BookStore Telegram Bot",
     description:
-      "A modern portfolio page using semantic HTML and responsive CSS for a clean, minimal presentation.",
-    stack: ["HTML5", "CSS3", "Responsive Design"]
+      "A commerce-focused Telegram bot with structured ordering flows, persistent data, and a practical user experience.",
+    stack: ["TypeScript", "Supabase", "grammY"]
   },
   {
-    title: "Interactive Course Showcase",
+    title: "Portfolio Website",
     description:
-      "JavaScript handles scrolling, active navigation, section reveals, and quick feedback in the contact form.",
-    stack: ["JavaScript", "DOM", "Events"]
+      "A clean, modern portfolio designed to present projects, skills, and personal brand with clarity.",
+    stack: ["React", "TypeScript", "CSS"]
   },
   {
-    title: "Asynchronous Project Loader",
+    title: "Node.js API Service",
     description:
-      "Project content is loaded asynchronously from a JSON file to reflect the Ajax chapter in a simple way.",
-    stack: ["AJAX", "JSON", "Fetch API"]
+      "A maintainable API service focused on organized routes, reliable responses, and straightforward integration.",
+    stack: ["Node.js", "Express", "REST API"]
   }
 ];
 
@@ -26,6 +26,48 @@ const backToTopBtn = document.getElementById("backToTopBtn");
 const yearElement = document.getElementById("year");
 const contactForm = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
+const themeToggle = document.getElementById("themeToggle");
+const themeToggleLabel = document.getElementById("themeToggleLabel");
+const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+
+  if (!themeToggle || !themeToggleLabel) {
+    return;
+  }
+
+  const isDark = theme === "dark";
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggleLabel.textContent = isDark ? "Light mode" : "Dark mode";
+}
+
+function setupThemeToggle() {
+  const savedTheme = localStorage.getItem("theme");
+  applyTheme(savedTheme || document.documentElement.getAttribute("data-theme") || "light");
+
+  if (!themeToggle) {
+    return;
+  }
+
+  themeToggle.addEventListener("click", () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+    localStorage.setItem("theme", nextTheme);
+    applyTheme(nextTheme);
+  });
+
+  systemTheme.addEventListener("change", (event) => {
+    const chosenTheme = localStorage.getItem("theme");
+
+    if (chosenTheme) {
+      return;
+    }
+
+    applyTheme(event.matches ? "dark" : "light");
+  });
+}
 
 function renderProjects(projects) {
   if (!projectGrid) {
@@ -172,6 +214,7 @@ setupSmoothScroll();
 setupRevealAnimation();
 setupScrollUI();
 setupContactForm();
+setupThemeToggle();
 setFooterYear();
 updateActiveNav();
 loadProjects();
