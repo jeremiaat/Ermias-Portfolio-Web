@@ -48,9 +48,9 @@ Portfolio Website/
 Edit `projects.json` to add new projects:
 ```json
 {
-  "title": "Your Project",
-  "description": "Project description",
-  "stack": ["Tech1", "Tech2", "Tech3"]
+  "title": "Portfolio Website",
+  "description": "clean and modern portfolio website",
+  "stack": ["Html5", "css", "javascript"]
 }
 ```
 
