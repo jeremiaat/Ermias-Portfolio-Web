@@ -3,112 +3,207 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Jeremiah | Software Developer & UI Designer</title>
-  
-  <!-- Custom CSS -->
+  <meta name="description" content="Modern portfolio website for Jeremiah, focused on web development, UI design, and clean digital experiences.">
+  <title>Jeremiah | Portfolio Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="Jeremiah home">
+        <span class="brand-mark">J</span>
+        <span class="brand-text">Jeremiah</span>
+      </a>
 
-<header class="container">
-  <div class="logo">Jeremiah</div>
-  <nav>
-    <a href="#about">About</a>
-    <a href="#projects">Work</a>
-    <a href="#skills">Skills</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+      <nav class="main-nav" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<!-- HERO Section -->
-<section class="hero container">
-  <div class="hero-text">
-    <h2>Designing clean interfaces & building scalable systems.</h2>
-    <p>I'm a software developer focused on backend systems and modern UI design. I build fast, maintainable, and user-centered applications.</p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn primary">View Work</a>
-      <a href="#contact" class="btn outline">Contact Me</a>
-    </div>
-  </div>
-</section>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-layout">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Web developer / UI-focused / Problem solver</p>
+          <p class="hero-kicker">Thoughtful interfaces, solid front-end structure, and smooth user interaction.</p>
+          <h1>Building simple digital experiences with clean structure and modern interaction.</h1>
+          <p class="hero-summary">
+            I design and build websites that feel calm, usable, and visually clear,
+            with a strong focus on responsiveness, accessibility, and polished interaction.
+          </p>
 
-<!-- ABOUT Section -->
-<section id="about" class="container section">
-  <h3>About</h3>
-  <p>I'm a software developer with a strong focus on backend architecture and clean user interfaces.
-  I specialize in building scalable APIs, structured systems, and intuitive digital experiences.
-  My approach combines performance, clarity, and usability. Over the years, I've contributed to 
-  open-source projects and designed systems that serve thousands of users. Based on curiosity 
-  and attention to detail — I turn complex requirements into elegant solutions.</p>
-</section>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">View projects</a>
+            <a href="#contact" class="btn btn-secondary">Get in touch</a>
+          </div>
 
-<!-- PROJECTS Section -->
-<section id="projects" class="container section">
-  <h3>Selected Work</h3>
-  <div class="grid">
-    <div class="card">
-      <h4>SmartPOS System</h4>
-      <p>Full POS system with authentication, role management, and real-time sales tracking. Integrated inventory and analytics dashboard.</p>
-      <span>Node.js • PostgreSQL • REST API</span>
-    </div>
-    <div class="card">
-      <h4>Historical Events API</h4>
-      <p>Scalable API delivering categorized historical data with search and filtering. Used by educational platforms for dynamic timelines.</p>
-      <span>Express • MongoDB • JWT</span>
-    </div>
-    <div class="card">
-      <h4>Animal Encyclopedia</h4>
-      <p>Interactive frontend showcasing wildlife with search, filters, and map integration. Real-time species data and rich media.</p>
-      <span>React • UI/UX • Python • Django</span>
-    </div>
-  </div>
-</section>
+          <div class="hero-meta" aria-label="Hero summary highlights">
+            <article class="hero-meta-card">
+              <strong>Minimal</strong>
+              <span>Clear hierarchy, balanced spacing, restrained color palette.</span>
+            </article>
+            <article class="hero-meta-card">
+              <strong>Responsive</strong>
+              <span>Designed to stay readable and elegant across screen sizes.</span>
+            </article>
+          </div>
+        </div>
 
-<!-- SKILLS Section -->
-<section id="skills" class="container section">
-  <h3>Skills & Technologies</h3>
-  <div class="skills">
-    <div class="skill-card">
-      <h5>Frontend</h5>
-      <p>HTML5, CSS3, JavaScript (ES6+), React, Responsive Design</p>
-    </div>
-    <div class="skill-card">
-      <h5>Backend</h5>
-      <p>Node.js, Express, RESTful APIs, Authentication, Microservices</p>
-    </div>
-    <div class="skill-card">
-      <h5>Database</h5>
-      <p>PostgreSQL, MongoDB, Prisma, Supabase</p>
-    </div>
-    <div class="skill-card">
-      <h5>Tools</h5>
-      <p>Git, Docker, Postman, GitHub Actions</p>
-    </div>
-  </div>
-</section>
+        <aside class="hero-panel reveal" aria-label="Portfolio highlights">
+          <p class="panel-label">What this site demonstrates</p>
 
-<!-- CONTACT Section -->
-<section id="contact" class="container section">
-  <h3>Let's Connect</h3>
-  <div class="contact-block">
-    <div class="contact-info">
-      <a href="mailto:hello@jeremiah.dev">Email</a>
-      <a href="">Github</a>
-      <a href="">LinkedIn</a>
+          <div class="hero-panel-top">
+            <p class="hero-panel-title">Front-end foundation with a polished presentation.</p>
+            <p class="hero-panel-text">
+              A calm landing section that combines structure, typography, contrast, and interaction in one focused layout.
+            </p>
+          </div>
+
+          <div class="hero-metrics" aria-label="Hero metrics">
+            <article class="metric-card">
+              <strong>4</strong>
+              <span>Core strengths shown across the portfolio</span>
+            </article>
+            <article class="metric-card">
+              <strong>3</strong>
+              <span>Interactive JavaScript touches on the page</span>
+            </article>
+          </div>
+
+          <ul class="feature-list">
+            <li>Semantic page structure and accessible navigation</li>
+            <li>Responsive layout with modern CSS styling</li>
+            <li>JavaScript DOM updates and scroll interactions</li>
+            <li>AJAX-style project loading from JSON data</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container split-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">About</p>
+          <h2>Designed with clarity, contrast, and whitespace.</h2>
+        </div>
+
+        <div class="about-content reveal">
+          <p>
+            I am Jeremiah, a developer who enjoys creating websites that feel calm, useful, and easy to understand.
+            My focus is on building interfaces that balance technical structure with visual simplicity.
+          </p>
+          <p>
+            The design follows key graphic design principles: strong hierarchy, careful spacing, limited color use,
+            readable typography, and consistent alignment so every section feels intentional.
+          </p>
+
+          <div class="stats-grid" aria-label="Quick facts">
+            <article class="stat-card">
+              <strong>4</strong>
+              <span>Core sections with semantic layout</span>
+            </article>
+            <article class="stat-card">
+              <strong>100%</strong>
+              <span>Responsive and mobile-friendly</span>
+            </article>
+            <article class="stat-card">
+              <strong>JS</strong>
+              <span>Interactive behavior and data rendering</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section section-soft">
+      <div class="container">
+        <div class="section-heading reveal section-heading-row">
+          <div>
+            <p class="eyebrow">Projects</p>
+            <h2>Course-aligned work, loaded dynamically.</h2>
+          </div>
+          <p class="section-note">Projects are rendered with JavaScript from external JSON data.</p>
+        </div>
+
+        <div id="projectGrid" class="project-grid reveal" aria-live="polite">
+          <article class="project-card loading-card">
+            <p>Loading projects...</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Skills</p>
+          <h2>Built from the fundamentals in the chapters.</h2>
+        </div>
+
+        <div class="skills-layout">
+          <article class="skill-panel reveal">
+            <h3>HTML</h3>
+            <p>Semantic tags, page structure, forms, links, headings, lists, and accessibility-aware markup.</p>
+          </article>
+          <article class="skill-panel reveal">
+            <h3>CSS</h3>
+            <p>Typography, color contrast, spacing systems, cards, responsive layout, and visual consistency.</p>
+          </article>
+          <article class="skill-panel reveal">
+            <h3>JavaScript</h3>
+            <p>Variables, functions, conditions, loops, DOM selection, event handling, and content updates.</p>
+          </article>
+          <article class="skill-panel reveal">
+            <h3>AJAX</h3>
+            <p>Asynchronous data loading using `fetch()` with a fallback for environments where local JSON is blocked.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section section-soft">
+      <div class="container contact-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Contact</p>
+          <h2>Let's create something clean and meaningful.</h2>
+          <p class="section-note">
+            This form uses JavaScript for validation and instant feedback on the page.
+          </p>
+        </div>
+
+        <form id="contactForm" class="contact-form reveal" novalidate>
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name">
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com">
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell me about your idea"></textarea>
+
+          <button type="submit" class="btn btn-primary">Send message</button>
+          <p id="formMessage" class="form-message" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Jeremiah. Designed with simplicity and structure.</p>
+      <a href="#top" class="footer-link">Back to top</a>
     </div>
-    <div class="contact-cta">
-      Open for collaborations & opportunities
-    </div>
-  </div>
-  <p style="margin-top: 24px; color: var(--muted);">Let's build something meaningful. Reach out anytime.</p>
-</section>
+  </footer>
 
-<footer class="container footer">
-  <p>© 2026 Jeremiah — Crafted with care for clean experiences</p>
-</footer>
+  <button id="backToTopBtn" class="back-to-top" type="button" aria-label="Back to top">&uarr;</button>
 
-<button class="back-to-top" id="backToTopBtn">↑</button>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

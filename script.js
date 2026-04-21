@@ -1,124 +1,177 @@
-// Smooth scroll for navigation links
-document.querySelectorAll("nav a, .hero-actions a, .btn").forEach(link => {
-  if (link.hash && link.hash.startsWith("#") && link.pathname === window.location.pathname) {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const targetId = link.getAttribute("href");
-      if (targetId && targetId !== "#") {
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-          history.pushState(null, null, targetId);
-        }
-      }
-    });
+const fallbackProjects = [
+  {
+    title: "Responsive Portfolio Interface",
+    description:
+      "A modern portfolio page using semantic HTML and responsive CSS for a clean, minimal presentation.",
+    stack: ["HTML5", "CSS3", "Responsive Design"]
+  },
+  {
+    title: "Interactive Course Showcase",
+    description:
+      "JavaScript handles scrolling, active navigation, section reveals, and quick feedback in the contact form.",
+    stack: ["JavaScript", "DOM", "Events"]
+  },
+  {
+    title: "Asynchronous Project Loader",
+    description:
+      "Project content is loaded asynchronously from a JSON file to reflect the Ajax chapter in a simple way.",
+    stack: ["AJAX", "JSON", "Fetch API"]
   }
-});
+];
 
-// Intersection Observer for fade-in animations
-const sections = document.querySelectorAll(".section");
-const heroSection = document.querySelector(".hero");
+const projectGrid = document.getElementById("projectGrid");
+const navLinks = document.querySelectorAll(".main-nav a");
+const contentSections = [...document.querySelectorAll("main section[id]")];
+const backToTopBtn = document.getElementById("backToTopBtn");
+const yearElement = document.getElementById("year");
+const contactForm = document.getElementById("contactForm");
+const formMessage = document.getElementById("formMessage");
 
-const observerOptions = {
-  threshold: 0.15,
-  rootMargin: "0px 0px -20px 0px"
-};
+function renderProjects(projects) {
+  if (!projectGrid) {
+    return;
+  }
 
-const fadeObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = "1";
-      entry.target.style.transform = "translateY(0)";
-      fadeObserver.unobserve(entry.target);
-    }
-  });
-}, observerOptions);
-
-sections.forEach(section => {
-  section.style.opacity = "0";
-  section.style.transform = "translateY(28px)";
-  section.style.transition = "opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.7s ease-out";
-  fadeObserver.observe(section);
-});
-
-// Hero section fade-in
-if (heroSection) {
-  heroSection.style.opacity = "0";
-  heroSection.style.transform = "translateY(18px)";
-  heroSection.style.transition = "opacity 0.8s ease, transform 0.8s ease";
-  const heroObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = "1";
-        entry.target.style.transform = "translateY(0)";
-        heroObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  heroObserver.observe(heroSection);
+  projectGrid.innerHTML = projects
+    .map(
+      (project) => `
+        <article class="project-card">
+          <h3>${project.title}</h3>
+          <p>${project.description}</p>
+          <div class="tag-list">
+            ${project.stack.map((item) => `<span class="tag">${item}</span>`).join("")}
+          </div>
+        </article>
+      `
+    )
+    .join("");
 }
 
-// Active navigation highlight on scroll
-const navLinks = document.querySelectorAll("nav a");
-const allSections = Array.from(document.querySelectorAll("section[id]"));
+async function loadProjects() {
+  try {
+    const response = await fetch("./projects.json");
+
+    if (!response.ok) {
+      throw new Error("Could not load project data.");
+    }
+
+    const projects = await response.json();
+    renderProjects(projects);
+  } catch (error) {
+    renderProjects(fallbackProjects);
+  }
+}
 
 function updateActiveNav() {
-  let current = "";
-  const scrollPos = window.scrollY + 150;
-  allSections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    const sectionBottom = sectionTop + section.offsetHeight;
-    if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
-      current = section.getAttribute("id");
+  const marker = window.scrollY + 180;
+  let currentSection = "";
+
+  contentSections.forEach((section) => {
+    const top = section.offsetTop;
+    const bottom = top + section.offsetHeight;
+
+    if (marker >= top && marker < bottom) {
+      currentSection = section.id;
     }
   });
-  navLinks.forEach(link => {
-    link.classList.remove("active");
-    const href = link.getAttribute("href").substring(1);
-    if (href === current) {
-      link.classList.add("active");
-    }
+
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${currentSection}`);
   });
 }
 
-window.addEventListener("scroll", () => {
-  requestAnimationFrame(updateActiveNav);
-  const backBtn = document.getElementById("backToTopBtn");
-  if (window.scrollY > 500) {
-    backBtn.classList.add("show");
-  } else {
-    backBtn.classList.remove("show");
+function setupSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const targetId = link.getAttribute("href");
+      const targetElement = document.querySelector(targetId);
+
+      if (!targetElement) {
+        return;
+      }
+
+      event.preventDefault();
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+}
+
+function setupRevealAnimation() {
+  const revealItems = document.querySelectorAll(".reveal");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15
+    }
+  );
+
+  revealItems.forEach((item) => observer.observe(item));
+}
+
+function setupScrollUI() {
+  window.addEventListener("scroll", () => {
+    window.requestAnimationFrame(() => {
+      updateActiveNav();
+      backToTopBtn.classList.toggle("show", window.scrollY > 520);
+    });
+  });
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+function setupContactForm() {
+  if (!contactForm || !formMessage) {
+    return;
   }
-});
+
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(contactForm);
+    const name = formData.get("name").toString().trim();
+    const email = formData.get("email").toString().trim();
+    const message = formData.get("message").toString().trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    formMessage.className = "form-message";
+
+    if (!name || !email || !message) {
+      formMessage.textContent = "Please fill in all fields before sending your message.";
+      formMessage.classList.add("is-error");
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      formMessage.textContent = "Please enter a valid email address.";
+      formMessage.classList.add("is-error");
+      return;
+    }
+
+    formMessage.textContent = `Thanks, ${name}. Your message is ready to be sent.`;
+    formMessage.classList.add("is-success");
+    contactForm.reset();
+  });
+}
+
+function setFooterYear() {
+  if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+  }
+}
+
+setupSmoothScroll();
+setupRevealAnimation();
+setupScrollUI();
+setupContactForm();
+setFooterYear();
 updateActiveNav();
-
-// Back to top button functionality
-const backBtn = document.getElementById("backToTopBtn");
-backBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-});
-
-// Handle hash links on page load
-if (window.location.hash) {
-  const target = document.querySelector(window.location.hash);
-  if (target) {
-    setTimeout(() => {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
-  }
-}
-
-// Update footer year dynamically
-const footerYear = document.querySelector(".footer p");
-if (footerYear) {
-  const currentYear = new Date().getFullYear();
-  if (footerYear.innerHTML.includes("2026")) {
-    footerYear.innerHTML = footerYear.innerHTML.replace("2026", currentYear);
-  }
-}
+loadProjects();

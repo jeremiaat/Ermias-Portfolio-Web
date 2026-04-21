@@ -1,0 +1,17 @@
+[
+  {
+    "title": "BookStore Telegram Bot",
+    "description": "A modern ecommerce site built with typescript, supabase, and better cashing technologies",
+    "stack": ["Typescript", "supabase", "grammy"]
+  },
+  {
+    "title": "Interactive Course Showcase",
+    "description": "A JavaScript-driven section that updates the page dynamically, demonstrating DOM selection, event handling, and reusable rendering logic.",
+    "stack": ["JavaScript", "DOM", "UI Interaction"]
+  },
+  {
+    "title": "Asynchronous Project Loader",
+    "description": "A lightweight AJAX example that loads project data from JSON using fetch, with a graceful fallback to keep the page functional everywhere.",
+    "stack": ["AJAX", "JSON", "Fetch API"]
+  }
+]
