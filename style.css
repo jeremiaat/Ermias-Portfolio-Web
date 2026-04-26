@@ -125,6 +125,11 @@ textarea {
   font-weight: 700;
 }
 
+:root[data-theme="dark"] .brand-mark {
+  background: #fff;
+  color: var(--text);
+}
+
 .brand-text,
 .main-nav a {
   font-weight: 500;

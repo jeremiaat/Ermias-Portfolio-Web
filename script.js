@@ -45,8 +45,7 @@ function applyTheme(theme) {
 }
 
 function setupThemeToggle() {
-  const savedTheme = localStorage.getItem("theme");
-  applyTheme(savedTheme || document.documentElement.getAttribute("data-theme") || "light");
+  applyTheme("light");
 
   if (!themeToggle) {
     return;
