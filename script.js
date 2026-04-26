@@ -29,6 +29,8 @@ const formMessage = document.getElementById("formMessage");
 const themeToggle = document.getElementById("themeToggle");
 const themeToggleLabel = document.getElementById("themeToggleLabel");
 const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+const headerControls = document.querySelector(".header-controls");
 
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
@@ -204,6 +206,49 @@ function setupContactForm() {
   });
 }
 
+function setupMobileMenu() {
+  if (!mobileMenuToggle || !headerControls) {
+    return;
+  }
+
+  mobileMenuToggle.addEventListener("click", () => {
+    const isExpanded = mobileMenuToggle.getAttribute("aria-expanded") === "true";
+    
+    mobileMenuToggle.setAttribute("aria-expanded", String(!isExpanded));
+    headerControls.classList.toggle("mobile-menu-open");
+    
+    // Prevent body scroll when menu is open
+    if (!isExpanded) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  });
+
+  // Close menu when clicking on navigation links
+  const navLinks = headerControls.querySelectorAll(".main-nav a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      mobileMenuToggle.setAttribute("aria-expanded", "false");
+      headerControls.classList.remove("mobile-menu-open");
+      document.body.style.overflow = "";
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    const isMenuOpen = headerControls.classList.contains("mobile-menu-open");
+    const isClickInsideMenu = headerControls.contains(e.target);
+    const isClickOnToggle = mobileMenuToggle.contains(e.target);
+    
+    if (isMenuOpen && !isClickInsideMenu && !isClickOnToggle) {
+      mobileMenuToggle.setAttribute("aria-expanded", "false");
+      headerControls.classList.remove("mobile-menu-open");
+      document.body.style.overflow = "";
+    }
+  });
+}
+
 function setFooterYear() {
   if (yearElement) {
     yearElement.textContent = new Date().getFullYear();
@@ -215,6 +260,7 @@ setupRevealAnimation();
 setupScrollUI();
 setupContactForm();
 setupThemeToggle();
+setupMobileMenu();
 setFooterYear();
 updateActiveNav();
 loadProjects();
