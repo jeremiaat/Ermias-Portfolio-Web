@@ -1,226 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Modern portfolio website for Jeremiah, focused on web development, UI design, and clean digital experiences.">
   <title>Jeremiah | Portfolio Website</title>
-  <script>
-    (function () {
-      document.documentElement.setAttribute("data-theme", "light");
-    })();
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Newsreader:ital,wght@0,400;1,400&family=Inter:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="#top" class="brand" aria-label="Jeremiah home">
-        <span class="brand-mark">J</span>
-        <span class="brand-text">Jeremiah</span>
-      </a>
-
-      <button id="mobileMenuToggle" class="mobile-menu-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
-
-      <div class="header-controls">
-        <nav class="main-nav" aria-label="Primary navigation">
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-        </nav>
-
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
-          <span class="theme-toggle-icon" aria-hidden="true"></span>
-          <span id="themeToggleLabel">Dark mode</span>
+  <!-- TopAppBar -->
+  <header class="header">
+    <div class="header-container">
+      <div class="header-logo">
+        <span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+        <span class="logo-text">JEREMIAH</span>
+      </div>
+      <nav class="nav" id="mainNav">
+        <a class="nav-link nav-link-active" href="#about">About</a>
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#skills">Skills</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-button" type="button" aria-label="Switch color theme" aria-pressed="false">
+          <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
+        </button>
+        <button id="mobileMenuToggle" class="icon-button mobile-menu-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="material-symbols-outlined" id="menuIcon">menu</span>
         </button>
       </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu hidden">
+      <nav class="mobile-nav">
+        <a class="mobile-nav-link" href="#about">About</a>
+        <a class="mobile-nav-link" href="#projects">Projects</a>
+        <a class="mobile-nav-link" href="#skills">Skills</a>
+        <a class="mobile-nav-link" href="#contact">Contact</a>
+      </nav>
     </div>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <div class="container hero-layout">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">Web developer / UI-focused / Problem solver</p>
-          <p class="hero-kicker">Thoughtful interfaces, solid front-end structure, and smooth user interaction.</p>
-          <h1>Building simple digital experiences</h1>
-          <p class="hero-summary">
-            I design and build websites that feel calm, usable, and visually clear,
-            with a strong focus on responsiveness, accessibility, and polished interaction.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#projects" class="btn btn-primary">View projects</a>
-            <a href="#contact" class="btn btn-secondary">Get in touch</a>
-          </div>
-
-          <div class="hero-meta" aria-label="Hero summary highlights">
-            <article class="hero-meta-card">
-              <strong>Minimal</strong>
-              <span>Clear hierarchy, balanced spacing, restrained color palette.</span>
-            </article>
-            <article class="hero-meta-card">
-              <strong>Responsive</strong>
-              <span>Designed to stay readable and elegant across screen sizes.</span>
-            </article>
-          </div>
+    <!-- Hero Section -->
+    <section class="section hero">
+      <div class="hero-content reveal">
+        <p class="label">Web developer / UI-focused / Problem solver</p>
+        <h1 class="display-xl">
+          Building simple digital experiences
+        </h1>
+        <p class="body-lg italic">
+          Thoughtful interfaces, solid front-end structure, and smooth user interaction. I design and build websites that feel calm, usable, and visually clear.
+        </p>
+        <div class="hero-links">
+          <a href="#projects" class="link-primary">View projects</a>
+          <a href="#contact" class="link-secondary">Get in touch</a>
         </div>
-
-        <aside class="hero-panel reveal" aria-label="Portfolio highlights">
-          <p class="panel-label">Software Engineer</p>
-
-          <div class="hero-panel-top">
-            <p class="hero-panel-title">Designing reliable products with a strong eye for user experience.</p>
-            <p class="hero-panel-text">
-              I enjoy building web applications that are clean in the interface, practical in architecture, and thoughtful in the details.
-            </p>
-          </div>
-
-          <div class="hero-metrics" aria-label="Hero metrics">
-            <article class="metric-card">
-              <strong>Front-end</strong>
-              <span>React, TypeScript, responsive UI, and design-focused implementation</span>
-            </article>
-            <article class="metric-card">
-              <strong>Back-end</strong>
-              <span>Node.js, API development, data handling, and maintainable project structure</span>
-            </article>
-          </div>
-
-          <ul class="feature-list">
-            <li>Building responsive interfaces with React and modern CSS</li>
-            <li>Creating scalable back-end services with Node.js</li>
-            <li>Writing safer, maintainable code with TypeScript</li>
-            <li>Using Git for version control and collaborative workflows</li>
-          </ul>
-        </aside>
       </div>
     </section>
 
+    <!-- Grid Line Architecture -->
+    <div class="container">
+      <div class="grid-line"></div>
+    </div>
+
+    <!-- About Section -->
     <section id="about" class="section">
-      <div class="container split-layout">
-        <div class="section-heading reveal">
-          <p class="eyebrow">About</p>
-          <h2>Designed with clarity, contrast, and whitespace.</h2>
+      <div class="grid-12">
+        <div class="col-4 reveal">
+          <p class="label">About</p>
         </div>
-
-        <div class="about-content reveal">
-          <p>
-            I am Jeremiah, a developer who enjoys creating websites that feel calm, useful, and easy to understand.
-            My focus is on building interfaces that balance technical structure with visual simplicity.
+        <div class="col-8 reveal">
+          <h2 class="headline-lg">
+            Designed with clarity, contrast, and whitespace.
+          </h2>
+          <p class="body-lg italic mb-6">
+            I am Jeremiah, a developer who enjoys creating websites that feel calm, useful, and easy to understand. My focus is on building interfaces that balance technical structure with visual simplicity.
           </p>
-          <p>
-            The design follows key graphic design principles: strong hierarchy, careful spacing, limited color use,
-            readable typography, and consistent alignment so every section feels intentional.
+          <p class="body-md">
+            The design follows key graphic design principles: strong hierarchy, careful spacing, limited color use, readable typography, and consistent alignment so every section feels intentional.
           </p>
-
-          <div class="stats-grid" aria-label="Quick facts">
-            <article class="stat-card">
-              <strong>4</strong>
-              <span>Core sections with semantic layout</span>
+          <div class="stats-grid">
+            <article class="stat-item">
+              <strong class="headline-md">4</strong>
+              <span class="body-md">Core sections with semantic layout</span>
             </article>
-            <article class="stat-card">
-              <strong>100%</strong>
-              <span>Responsive and mobile-friendly</span>
+            <article class="stat-item">
+              <strong class="headline-md">100%</strong>
+              <span class="body-md">Responsive and mobile-friendly</span>
             </article>
-            <article class="stat-card">
-              <strong>JS</strong>
-              <span>Interactive behavior and data rendering</span>
+            <article class="stat-item">
+              <strong class="headline-md">JS</strong>
+              <span class="body-md">Interactive behavior and data rendering</span>
             </article>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="projects" class="section section-soft">
-      <div class="container">
-        <div class="section-heading reveal section-heading-row">
-          <div>
-            <p class="eyebrow">Projects</p>
-            <h2>Selected work focused on product quality and usability.</h2>
+    <!-- Featured Works Section -->
+    <section id="projects" class="section">
+      <div class="section-header reveal">
+        <div>
+          <p class="label">Selected Works</p>
+          <h2 class="headline-lg">Projects focused on product quality and usability.</h2>
+        </div>
+        <span class="label subtitle">A few examples of the kind of systems and interfaces I enjoy building.</span>
+      </div>
+      <div id="projectGrid" class="project-grid reveal" aria-live="polite">
+        <article class="project-card">
+          <div class="project-content">
+            <span class="project-category">Loading...</span>
+            <h3 class="headline-md">Loading projects...</h3>
           </div>
-          <p class="section-note">A few examples of the kind of systems and interfaces I enjoy building.</p>
-        </div>
-
-        <div id="projectGrid" class="project-grid reveal" aria-live="polite">
-          <article class="project-card loading-card">
-            <p>Loading projects...</p>
-          </article>
-        </div>
+        </article>
       </div>
     </section>
 
+    <!-- Skills Section -->
     <section id="skills" class="section">
-      <div class="container">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Skills</p>
-          <h2>Tools and technologies I use to build modern web products.</h2>
+      <div class="grid-12">
+        <div class="col-4 reveal">
+          <p class="label">Skills</p>
+          <h2 class="headline-lg">
+            Tools and technologies I use to build modern web products.
+          </h2>
         </div>
-
-        <div class="skills-layout">
-          <article class="skill-panel reveal">
-            <h3>React</h3>
-            <p>Building component-based interfaces, reusable UI systems, and responsive user experiences.</p>
-          </article>
-          <article class="skill-panel reveal">
-            <h3>Node.js</h3>
-            <p>Developing back-end services, APIs, and application logic that stay organized and scalable.</p>
-          </article>
-          <article class="skill-panel reveal">
-            <h3>TypeScript</h3>
-            <p>Writing safer code with better structure, clearer contracts, and improved long-term maintainability.</p>
-          </article>
-          <article class="skill-panel reveal">
-            <h3>Git</h3>
-            <p>Managing version control, tracking changes cleanly, and collaborating through structured workflows.</p>
-          </article>
+        <div class="col-8 reveal">
+          <div class="skills-list-grid">
+            <ul class="skills-list">
+              <li class="skill-item">
+                React
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+              </li>
+              <li class="skill-item">
+                TypeScript
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+              </li>
+            </ul>
+            <ul class="skills-list">
+              <li class="skill-item">
+                Node.js
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+              </li>
+              <li class="skill-item">
+                Git
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+              </li>
+            </ul>
+          </div>
+          <div class="skills-detail">
+            <article class="skill-detail-item reveal">
+              <h3 class="headline-md">React</h3>
+              <p class="body-md">Building component-based interfaces, reusable UI systems, and responsive user experiences.</p>
+            </article>
+            <article class="skill-detail-item reveal">
+              <h3 class="headline-md">Node.js</h3>
+              <p class="body-md">Developing back-end services, APIs, and application logic that stay organized and scalable.</p>
+            </article>
+            <article class="skill-detail-item reveal">
+              <h3 class="headline-md">TypeScript</h3>
+              <p class="body-md">Writing safer code with better structure, clearer contracts, and improved long-term maintainability.</p>
+            </article>
+            <article class="skill-detail-item reveal">
+              <h3 class="headline-md">Git</h3>
+              <p class="body-md">Managing version control, tracking changes cleanly, and collaborating through structured workflows.</p>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section section-soft">
-      <div class="container contact-layout">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Contact</p>
-          <h2>Let's create something clean and meaningful.</h2>
-          <p class="section-note">
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="grid-12">
+        <div class="col-4 reveal">
+          <p class="label">Contact</p>
+          <h2 class="headline-lg mb-4">
+            Let's create something clean and meaningful.
+          </h2>
+          <p class="body-md">
             This form uses JavaScript for validation and instant feedback on the page.
           </p>
         </div>
-
-        <form id="contactForm" class="contact-form reveal" novalidate>
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="Your name">
-
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@example.com">
-
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="5" placeholder="Tell me about your idea"></textarea>
-
-          <button type="submit" class="btn btn-primary">Send message</button>
-          <p id="formMessage" class="form-message" aria-live="polite"></p>
-        </form>
+        <div class="col-8 reveal">
+          <form id="contactForm" class="contact-form" novalidate>
+            <div>
+              <label for="name" class="form-label">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" class="form-input">
+            </div>
+            <div>
+              <label for="email" class="form-label">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" class="form-input">
+            </div>
+            <div>
+              <label for="message" class="form-label">Message</label>
+              <textarea id="message" name="message" rows="5" placeholder="Tell me about your idea" class="form-textarea"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">
+              Send message
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            <p id="formMessage" class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>&copy; <span id="year"></span> Jeremiah. Designed with simplicity and structure.</p>
-      <a href="#top" class="footer-link">Back to top</a>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="logo-text">JEREMIAH</span>
+        <p class="body-md">&copy; <span id="year"></span> Jeremiah. Designed with simplicity and structure.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-links-column">
+          <a class="footer-link footer-link-bold" href="#about">About</a>
+          <a class="footer-link" href="#projects">Projects</a>
+        </div>
+        <div class="footer-links-column">
+          <a class="footer-link" href="#skills">Skills</a>
+          <a class="footer-link" href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="footer-time">
+        <p class="label">Local Time</p>
+        <p class="headline-md" id="localTime">--:--</p>
+      </div>
     </div>
   </footer>
 
-  <button id="backToTopBtn" class="back-to-top" type="button" aria-label="Back to top">&uarr;</button>
+  <!-- Back to top button -->
+  <button id="backToTopBtn" class="back-to-top" type="button" aria-label="Back to top">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
 
   <script src="script.js"></script>
 </body>

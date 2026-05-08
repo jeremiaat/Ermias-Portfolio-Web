@@ -20,40 +20,58 @@ const fallbackProjects = [
 ];
 
 const projectGrid = document.getElementById("projectGrid");
-const navLinks = document.querySelectorAll(".main-nav a");
+const navLinks = document.querySelectorAll("#mainNav a, #mobileMenu a");
 const contentSections = [...document.querySelectorAll("main section[id]")];
 const backToTopBtn = document.getElementById("backToTopBtn");
 const yearElement = document.getElementById("year");
+const localTimeElement = document.getElementById("localTime");
 const contactForm = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
 const themeToggle = document.getElementById("themeToggle");
-const themeToggleLabel = document.getElementById("themeToggleLabel");
+const themeIcon = document.getElementById("themeIcon");
 const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
 const mobileMenuToggle = document.getElementById("mobileMenuToggle");
-const headerControls = document.querySelector(".header-controls");
+const mobileMenu = document.getElementById("mobileMenu");
+const menuIcon = document.getElementById("menuIcon");
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
+  const html = document.documentElement;
+  
+  if (theme === "dark") {
+    html.classList.remove("light");
+    html.classList.add("dark");
+  } else {
+    html.classList.remove("dark");
+    html.classList.add("light");
+  }
 
-  if (!themeToggle || !themeToggleLabel) {
+  if (!themeToggle || !themeIcon) {
     return;
   }
 
   const isDark = theme === "dark";
   themeToggle.setAttribute("aria-pressed", String(isDark));
-  themeToggleLabel.textContent = isDark ? "Light mode" : "Dark mode";
+  themeIcon.textContent = isDark ? "light_mode" : "dark_mode";
 }
 
 function setupThemeToggle() {
-  applyTheme("light");
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else if (systemTheme.matches) {
+    applyTheme("dark");
+  } else {
+    applyTheme("light");
+  }
 
   if (!themeToggle) {
     return;
   }
 
   themeToggle.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    const isDark = document.documentElement.classList.contains("dark");
+    const nextTheme = isDark ? "light" : "dark";
 
     localStorage.setItem("theme", nextTheme);
     applyTheme(nextTheme);
@@ -77,12 +95,19 @@ function renderProjects(projects) {
 
   projectGrid.innerHTML = projects
     .map(
-      (project) => `
+      (project, index) => `
         <article class="project-card">
-          <h3>${project.title}</h3>
-          <p>${project.description}</p>
-          <div class="tag-list">
-            ${project.stack.map((item) => `<span class="tag">${item}</span>`).join("")}
+          <div class="project-content">
+            <span class="project-category">${project.stack[0] || 'Project'}</span>
+            <h3 class="headline-md">${project.title}</h3>
+            <p class="body-md">${project.description}</p>
+            <div class="project-tags">
+              ${project.stack.map((item) => `<span class="tag">${item}</span>`).join("")}
+            </div>
+            <a class="project-link" href="#">
+              <span class="project-link-text">View Project Details</span>
+              <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+            </a>
           </div>
         </article>
       `
@@ -119,7 +144,12 @@ function updateActiveNav() {
   });
 
   navLinks.forEach((link) => {
-    link.classList.toggle("active", link.getAttribute("href") === `#${currentSection}`);
+    const isActive = link.getAttribute("href") === `#${currentSection}`;
+    if (isActive) {
+      link.classList.add("nav-link-active");
+    } else {
+      link.classList.remove("nav-link-active");
+    }
   });
 }
 
@@ -135,6 +165,13 @@ function setupSmoothScroll() {
 
       event.preventDefault();
       targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      // Close mobile menu if open
+      if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
+        mobileMenu.classList.add("hidden");
+        mobileMenuToggle.setAttribute("aria-expanded", "false");
+        menuIcon.textContent = "menu";
+      }
     });
   });
 }
@@ -185,7 +222,7 @@ function setupContactForm() {
     const message = formData.get("message").toString().trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    formMessage.className = "form-message";
+    formMessage.className = "font-body-md text-body-md";
 
     if (!name || !email || !message) {
       formMessage.textContent = "Please fill in all fields before sending your message.";
@@ -206,7 +243,7 @@ function setupContactForm() {
 }
 
 function setupMobileMenu() {
-  if (!mobileMenuToggle || !headerControls) {
+  if (!mobileMenuToggle || !mobileMenu) {
     return;
   }
 
@@ -214,7 +251,8 @@ function setupMobileMenu() {
     const isExpanded = mobileMenuToggle.getAttribute("aria-expanded") === "true";
     
     mobileMenuToggle.setAttribute("aria-expanded", String(!isExpanded));
-    headerControls.classList.toggle("mobile-menu-open");
+    mobileMenu.classList.toggle("hidden");
+    menuIcon.textContent = isExpanded ? "menu" : "close";
     
     // Prevent body scroll when menu is open
     if (!isExpanded) {
@@ -225,27 +263,27 @@ function setupMobileMenu() {
   });
 
   // Close menu when clicking on navigation links
-  const navLinks = headerControls.querySelectorAll(".main-nav a");
-  navLinks.forEach(link => {
+  const mobileNavLinks = mobileMenu.querySelectorAll("a");
+  mobileNavLinks.forEach(link => {
     link.addEventListener("click", () => {
       mobileMenuToggle.setAttribute("aria-expanded", "false");
-      headerControls.classList.remove("mobile-menu-open");
+      mobileMenu.classList.add("hidden");
+      menuIcon.textContent = "menu";
       document.body.style.overflow = "";
     });
   });
+}
 
-  // Close menu when clicking outside
-  document.addEventListener("click", (e) => {
-    const isMenuOpen = headerControls.classList.contains("mobile-menu-open");
-    const isClickInsideMenu = headerControls.contains(e.target);
-    const isClickOnToggle = mobileMenuToggle.contains(e.target);
-    
-    if (isMenuOpen && !isClickInsideMenu && !isClickOnToggle) {
-      mobileMenuToggle.setAttribute("aria-expanded", "false");
-      headerControls.classList.remove("mobile-menu-open");
-      document.body.style.overflow = "";
-    }
-  });
+function updateLocalTime() {
+  if (!localTimeElement) return;
+  
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const gmtOffset = -now.getTimezoneOffset() / 60;
+  const gmtString = gmtOffset >= 0 ? `GMT+${gmtOffset}` : `GMT${gmtOffset}`;
+  
+  localTimeElement.textContent = `${hours}:${minutes} ${gmtString}`;
 }
 
 function setFooterYear() {
@@ -262,4 +300,6 @@ setupThemeToggle();
 setupMobileMenu();
 setFooterYear();
 updateActiveNav();
+updateLocalTime();
+setInterval(updateLocalTime, 60000); // Update every minute
 loadProjects();
