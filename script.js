@@ -19,6 +19,11 @@ const fallbackProjects = [
   }
 ];
 
+// Generate unique ID for projects
+function generateProjectId(project) {
+  return project.title.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+}
+
 const projectGrid = document.getElementById("projectGrid");
 const navLinks = document.querySelectorAll("#mainNav a, #mobileMenu a");
 const contentSections = [...document.querySelectorAll("main section[id]")];
@@ -104,8 +109,8 @@ function renderProjects(projects) {
             <div class="project-tags">
               ${project.stack.map((item) => `<span class="tag">${item}</span>`).join("")}
             </div>
-            <a class="project-link" href="#">
-              <span class="project-link-text">View Project Details</span>
+            <a class="project-link" href="${project.github || '#'}" target="_blank" rel="noopener noreferrer">
+              <span class="project-link-text">View Code</span>
               <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
             </a>
           </div>
@@ -116,6 +121,19 @@ function renderProjects(projects) {
 }
 
 async function loadProjects() {
+  // First try to load from localStorage (admin changes)
+  const stored = localStorage.getItem('portfolioProjects');
+  if (stored) {
+    try {
+      const projects = JSON.parse(stored);
+      renderProjects(projects);
+      return;
+    } catch (e) {
+      console.error('Error parsing localStorage projects:', e);
+    }
+  }
+
+  // Fallback to loading from projects.json and save to localStorage
   try {
     const response = await fetch("./projects.json");
 
@@ -124,9 +142,21 @@ async function loadProjects() {
     }
 
     const projects = await response.json();
-    renderProjects(projects);
+    // Assign IDs to projects from projects.json and save to localStorage
+    const projectsWithIds = projects.map(project => ({
+      ...project,
+      id: generateProjectId(project)
+    }));
+    localStorage.setItem('portfolioProjects', JSON.stringify(projectsWithIds));
+    renderProjects(projectsWithIds);
   } catch (error) {
-    renderProjects(fallbackProjects);
+    // Assign IDs to fallback projects too
+    const fallbackWithIds = fallbackProjects.map(project => ({
+      ...project,
+      id: generateProjectId(project)
+    }));
+    localStorage.setItem('portfolioProjects', JSON.stringify(fallbackWithIds));
+    renderProjects(fallbackWithIds);
   }
 }
 
@@ -157,21 +187,34 @@ function setupSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href");
-      const targetElement = document.querySelector(targetId);
 
-      if (!targetElement) {
+      // Skip admin link - let hashchange handle it
+      if (targetId === "#admin") {
+        // Close mobile menu if open
+        if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
+          mobileMenu.classList.add("hidden");
+          mobileMenuToggle.setAttribute("aria-expanded", "false");
+          menuIcon.textContent = "menu";
+        }
         return;
       }
 
-      event.preventDefault();
-      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      // Close mobile menu if open
+      // Close mobile menu if open (do this early for all nav clicks)
       if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
         mobileMenu.classList.add("hidden");
         mobileMenuToggle.setAttribute("aria-expanded", "false");
         menuIcon.textContent = "menu";
       }
+
+      const targetElement = document.querySelector(targetId);
+
+      // If element is hidden (admin mode) or not found, let hashchange handle it
+      if (!targetElement || targetElement.classList.contains('hidden')) {
+        return;
+      }
+
+      event.preventDefault();
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 }
@@ -292,6 +335,226 @@ function setFooterYear() {
   }
 }
 
+// Admin Panel Functions
+function setupAdmin() {
+  const adminSection = document.getElementById('admin');
+  const addProjectBtn = document.getElementById('addProjectBtn');
+  const projectModal = document.getElementById('projectModal');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closeModalBtn = document.getElementById('closeModal');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const projectForm = document.getElementById('projectForm');
+  const modalTitle = document.getElementById('modalTitle');
+  const projectIdInput = document.getElementById('projectId');
+  const titleInput = document.getElementById('title');
+  const descriptionInput = document.getElementById('description');
+  const stackInput = document.getElementById('stack');
+  const githubInput = document.getElementById('github');
+  const projectList = document.getElementById('projectList');
+
+  const deleteModal = document.getElementById('deleteModal');
+  const deleteModalOverlay = document.getElementById('deleteModalOverlay');
+  const closeDeleteModalBtn = document.getElementById('closeDeleteModal');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+  let projects = [];
+  let projectToDelete = null;
+
+  function loadAdminProjects() {
+    const stored = localStorage.getItem('portfolioProjects');
+    if (stored) {
+      try {
+        projects = JSON.parse(stored);
+        // Assign IDs to any projects that don't have them
+        let needsSave = false;
+        projects = projects.map(project => {
+          if (!project.id) {
+            needsSave = true;
+            return { ...project, id: generateProjectId(project) };
+          }
+          return project;
+        });
+        if (needsSave) {
+          saveAdminProjects();
+        }
+      } catch (e) {
+        projects = [];
+      }
+    }
+    renderAdminProjects();
+  }
+
+  function saveAdminProjects() {
+    localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+  }
+
+  function renderAdminProjects() {
+    if (!projectList) return;
+
+    if (projects.length === 0) {
+      projectList.innerHTML = `
+        <div class="empty-state">
+          <span class="material-symbols-outlined">folder_open</span>
+          <p>No projects yet. Click "Add New Project" to get started.</p>
+        </div>
+      `;
+      return;
+    }
+
+    projectList.innerHTML = projects.map(project => {
+      const id = project.id || generateProjectId(project);
+      return `
+        <div class="project-list-item">
+          <div class="project-list-item-content">
+            <h3 class="project-list-item-title">${escapeHtml(project.title)}</h3>
+            <p class="project-list-item-description">${escapeHtml(project.description)}</p>
+            <div class="project-list-item-stack">
+              ${project.stack.map(tech => `<span class="tag">${escapeHtml(tech)}</span>`).join('')}
+            </div>
+          </div>
+          <div class="project-list-item-actions">
+            <button class="btn-icon edit" data-id="${id}" title="Edit">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn-icon delete" data-id="${id}" title="Delete">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Add event listeners to buttons
+    document.querySelectorAll('.btn-icon.edit').forEach(btn => {
+      btn.addEventListener('click', () => editProject(btn.dataset.id));
+    });
+    document.querySelectorAll('.btn-icon.delete').forEach(btn => {
+      btn.addEventListener('click', () => showDeleteModal(btn.dataset.id));
+    });
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function openModal() {
+    if (!projectModal) return;
+    modalTitle.textContent = 'Add New Project';
+    projectForm.reset();
+    projectIdInput.value = '';
+    projectModal.classList.remove('hidden');
+  }
+
+  function editProject(id) {
+    const project = projects.find(p => (p.id || generateProjectId(p)) === id);
+    if (!project) return;
+
+    modalTitle.textContent = 'Edit Project';
+    projectIdInput.value = id;
+    titleInput.value = project.title;
+    descriptionInput.value = project.description;
+    stackInput.value = project.stack.join(', ');
+    githubInput.value = project.github || '';
+    projectModal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    if (projectModal) projectModal.classList.add('hidden');
+  }
+
+  function showDeleteModal(id) {
+    projectToDelete = id;
+    if (deleteModal) deleteModal.classList.remove('hidden');
+  }
+
+  function closeDeleteModal() {
+    if (deleteModal) deleteModal.classList.add('hidden');
+    projectToDelete = null;
+  }
+
+  function deleteProject() {
+    if (!projectToDelete) return;
+
+    projects = projects.filter(p => (p.id || generateProjectId(p)) !== projectToDelete);
+    saveAdminProjects();
+    renderAdminProjects();
+    closeDeleteModal();
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const id = projectIdInput.value;
+    const title = titleInput.value.trim();
+    const description = descriptionInput.value.trim();
+    const stack = stackInput.value.split(',').map(s => s.trim()).filter(s => s);
+    const github = githubInput.value.trim();
+
+    if (!title || !description || stack.length === 0) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    if (id) {
+      const index = projects.findIndex(p => (p.id || generateProjectId(p)) === id);
+      if (index !== -1) {
+        projects[index] = { ...projects[index], title, description, stack, github };
+      }
+    } else {
+      const newProject = {
+        id: generateProjectId({ title, description, stack }),
+        title,
+        description,
+        stack,
+        github
+      };
+      projects.push(newProject);
+    }
+
+    saveAdminProjects();
+    renderAdminProjects();
+    closeModal();
+  }
+
+  function checkAdminVisibility() {
+    const hash = window.location.hash;
+    const contentSections = document.querySelectorAll('main section:not(#admin)');
+
+    if (hash === '#admin') {
+      if (adminSection) adminSection.classList.remove('hidden');
+      contentSections.forEach(s => s.classList.add('hidden'));
+      document.body.classList.add('admin-mode');
+      loadAdminProjects();
+    } else {
+      if (adminSection) adminSection.classList.add('hidden');
+      contentSections.forEach(s => s.classList.remove('hidden'));
+      document.body.classList.remove('admin-mode');
+    }
+  }
+
+  // Event listeners
+  if (addProjectBtn) addProjectBtn.addEventListener('click', openModal);
+  if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+  if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+  if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+
+  if (closeDeleteModalBtn) closeDeleteModalBtn.addEventListener('click', closeDeleteModal);
+  if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+  if (deleteModalOverlay) deleteModalOverlay.addEventListener('click', closeDeleteModal);
+  if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', deleteProject);
+
+  if (projectForm) projectForm.addEventListener('submit', handleFormSubmit);
+
+  // Check on hash change
+  window.addEventListener('hashchange', checkAdminVisibility);
+
+  // Check on initial load
+  checkAdminVisibility();
+}
+
 setupSmoothScroll();
 setupRevealAnimation();
 setupScrollUI();
@@ -303,3 +566,4 @@ updateActiveNav();
 updateLocalTime();
 setInterval(updateLocalTime, 60000); // Update every minute
 loadProjects();
+setupAdmin();

@@ -2,16 +2,19 @@
   {
     "title": "BookStore Telegram Bot",
     "description": "A commerce-focused Telegram bot built for a smoother ordering experience, with structured product flows, data persistence, and reliable bot interactions.",
-    "stack": ["TypeScript", "Supabase", "grammY"]
+    "stack": ["TypeScript", "Supabase", "grammY"],
+    "github": "https://github.com/jeremiat/bookstore-bot"
   },
   {
     "title": "Portfolio Website",
     "description": "A modern personal portfolio focused on clean layout, strong typography, responsive behavior, and polished front-end interaction.",
-    "stack": ["React", "TypeScript", "CSS"]
+    "stack": ["React", "TypeScript", "CSS"],
+    "github": "https://github.com/username/portfolio"
   },
   {
     "title": "Node.js API Service",
     "description": "A back-end service designed around maintainable routes, clear data flow, and dependable integration with client applications.",
-    "stack": ["Node.js", "Express", "REST API"]
+    "stack": ["Node.js", "Express", "REST API"],
+    "github": "https://github.com/username/nodejs-api"
   }
 ]
